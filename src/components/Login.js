@@ -15,6 +15,7 @@ class Login extends Component {
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPassChange = this.onPassChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.changeProps = this.changeProps.bind(this);
     }
 
     onEmailChange(event) {
@@ -23,6 +24,16 @@ class Login extends Component {
 
     onPassChange(event) {
         this.setState({ password: event.target.value });
+    }
+
+    changeProps(result) {
+        this.props.onUserChange({
+            name: result.name,
+            lastName: result.lastName,
+            email: result.email
+        })
+
+        this.props.onClose()
     }
 
     onSubmit(event) {
@@ -36,10 +47,13 @@ class Login extends Component {
         var myRequest = new Request(`${login_API}`, myInit);
 
         fetch(myRequest)
-            .then(function (response) {
-                return response.json()
+            .then(response => {
+               return response.json()
             })
-            .then(result => this.props.onClose())
+            .then(result => {
+                console.log(result)
+                this.changeProps(result)
+            })
 
         event.preventDefault();
     }
@@ -90,6 +104,7 @@ class Login extends Component {
 
 Login.propTypes = {
     onClose: React.PropTypes.func.isRequired,
+    onUserChange: React.PropTypes.func.isRequired,
     show: React.PropTypes.bool,
     children: React.PropTypes.node
 };

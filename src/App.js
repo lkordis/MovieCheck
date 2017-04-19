@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import './App.css';
 
@@ -33,6 +33,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css?family=Monoton|Raleway" rel="stylesheet" />
           <NavbarInstance />
           <Route path="/movie/:movieId" component={SingleMovie} />
           <Route exact={true} path="/" component={MovieGrid} />
@@ -48,10 +49,21 @@ class NavbarInstance extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { isOpenLogin: false, isOpenRegister: false }
+    this.state = {
+      isOpenLogin: false,
+      isOpenRegister: false,
+      user: {
+        email: "",
+        name: "",
+        lastName: ""
+      },
+      logged_in: false
+    }
 
     this.toggleModalLogin = this.toggleModalLogin.bind(this)
     this.toggleModalRegister = this.toggleModalRegister.bind(this)
+    this.onUserChange = this.onUserChange.bind(this)
+    this.logout = this.logout.bind(this)
   }
 
   toggleModalLogin = () => {
@@ -66,7 +78,37 @@ class NavbarInstance extends Component {
     });
   }
 
+  logout(){
+    let RAILS_API_BASE = "https://peaceful-reef-40428.herokuapp.com/logout"
+
+    fetch(`${RAILS_API_BASE}`, {method: 'DELETE'})
+      .then(response => this.setState({logged_in: false, user: {}}))
+  }
+
+  onUserChange(user) {
+    this.setState({
+      user: {
+        name: user.name,
+        email: user.email,
+        lastName: user.lastName
+      },
+      logged_in: true
+    })
+  }
+
   render() {
+    let logAction = null;
+    let register = null;
+    let currentUser = null;
+
+    if (!this.state.logged_in) {
+      logAction = <NavItem onClick={this.toggleModalLogin} >Prijava</NavItem>
+      register = <NavItem onClick={this.toggleModalRegister}>Registracija</NavItem>
+    } else {
+      logAction = <NavItem onClick={this.logout}>Odjava</NavItem>
+      currentUser = <NavItem >{this.state.user.name} {this.state.user.lastName}</NavItem >
+    }
+
     return (
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
@@ -76,22 +118,12 @@ class NavbarInstance extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
-            <NavItem eventKey={1} href="#">Link</NavItem>
-            <NavItem eventKey={2} href="#">Link</NavItem>
-            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-              <MenuItem eventKey={3.1}>Action</MenuItem>
-              <MenuItem eventKey={3.2}>Another action</MenuItem>
-              <MenuItem eventKey={3.3}>Something else here</MenuItem>
-              <MenuItem divider />
-              <MenuItem eventKey={3.3}>Separated link</MenuItem>
-            </NavDropdown>
-          </Nav>
           <Nav pullRight>
-            <Login show={this.state.isOpenLogin} onClose={this.toggleModalLogin} />
-            <Register show={this.state.isOpenRegister} onClose={this.toggleModalRegister} />
-            <NavItem onClick={this.toggleModalLogin} >Prijava</NavItem>
-            <NavItem onClick={this.toggleModalRegister}>Registracija</NavItem>
+            <Login show={this.state.isOpenLogin} onClose={this.toggleModalLogin} onUserChange={this.onUserChange} />
+            <Register show={this.state.isOpenRegister} onClose={this.toggleModalRegister} onUserChange={this.onUserChange}/>
+            {currentUser}
+            {logAction}
+            {register}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

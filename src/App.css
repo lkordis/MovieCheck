@@ -33,6 +33,9 @@ html {
 
 .singleMovie {
   color: whitesmoke;
+  font-family: 'Monoton', cursive;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-size: 70px;
 }
 
 .singleMovie-image {
@@ -44,3 +47,24 @@ html {
   height: 750px;
   opacity: 1;
 }
+
+.movie-body {
+  box-sizing: border-box;
+  max-width: 50em;
+  width: 94%;
+  font-size: 1.125em;
+  font-family: 'Raleway', sans-serif;
+  margin: 30vw auto 2em auto;
+  padding: 5%;
+  position: relative;
+  background-color: #2b2929;
+  color: whitesmoke
+}
+
+.movie-body-overview {
+  margin-top: -10%;
+  margin-bottom: 10%; 
+  font-size: 1.35em;
+}
+
+

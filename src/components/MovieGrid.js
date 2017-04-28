@@ -1,32 +1,30 @@
 import React, { Component } from 'react';
-import MovieTile from './MovieTile';
 import '../App.css';
 
 import $ from "jquery";
 
-let API_KEY = "0649ca7815178f68273bfb149e7716cc";
-let DISCOVER_ROUTE = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=`;
+import MovieTile from './MovieTile';
+import DiscoverApiData from '../helpers/ApiData.js'
 
 class MovieGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            movies: [],
-            page: 2
+            movies: []
         };
 
-        this.getApiData = this.getApiData.bind(this);
         this.setMovies = this.setMovies.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
     }
 
-    handleScroll(event){
-        var win = $(window);
-        if ($(document).height() - win.height() === win.scrollTop()) {
-            this.getApiData(this.state.page++)
-            this.setState({page: this.state.page++})
-            this.getApiData(this.state.page++)
-            this.setState({page: this.state.page++})
+    handleScroll(event) {
+        if (this.props.props instanceof DiscoverApiData)
+        {
+            var win = $(window);
+            if ($(document).height() - win.height() === win.scrollTop()) {
+                this.props.getApiData(this.setMovies)
+                this.props.getApiData(this.setMovies)
+            }
         }
     }
 
@@ -44,16 +42,8 @@ class MovieGrid extends Component {
         });
     }
 
-    getApiData(page) {
-        fetch(`${DISCOVER_ROUTE}${page}`)
-            .then(response => response.json())
-            .then(results => this.setMovies(results.results));
-
-    }
-
     componentWillMount() {
-        this.getApiData(1);
-        this.getApiData(2);
+        this.props.getInitialApiData(this.setMovies);
     }
 
     render() {
@@ -72,5 +62,10 @@ class MovieGrid extends Component {
         );
     }
 }
+
+MovieGrid.propTypes = {
+    getApiData: React.PropTypes.func.isRequired,
+    getInitialApiData: React.PropTypes.func.isRequired
+};
 
 export default MovieGrid;

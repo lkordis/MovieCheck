@@ -43,8 +43,11 @@ class Register extends Component {
         this.props.onUserChange({
             name: result.name,
             lastName: result.lastName,
-            email: result.email
+            email: result.email,
+            id: result.id
         })
+
+        localStorage.setItem("Authorization", result.auth_token)
 
         this.props.onClose()
     }
@@ -61,7 +64,6 @@ class Register extends Component {
 
         fetch(myRequest)
             .then(response => {
-                console.log(response)
                 return response.json() 
             })
             .then(result => {
@@ -97,7 +99,7 @@ class Register extends Component {
                             /><br />
                             <label>Password</label>
                             <input
-                                type="text"
+                                type="password"
                                 onChange={this.onPassChange}
                             /><br />
                             <button type="submit">

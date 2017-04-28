@@ -16,6 +16,7 @@ class Login extends Component {
         this.onPassChange = this.onPassChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.changeProps = this.changeProps.bind(this);
+        this.login = this.login.bind(this);
     }
 
     onEmailChange(event) {
@@ -30,10 +31,27 @@ class Login extends Component {
         this.props.onUserChange({
             name: result.name,
             lastName: result.lastName,
-            email: result.email
+            email: result.email,
+            id: result.id
         })
 
         this.props.onClose()
+    }
+
+    login() {
+        let login_API = `${RAILS_API_BASE}?`
+
+        var myHeaders = new Headers()
+        myHeaders.append("Authorization", localStorage.getItem("Authorization"))
+
+        fetch(`${login_API}`, {headers: myHeaders})
+            .then(response => {
+                return response.json()
+            })
+            .then(result => {
+                console.log(result)
+                this.changeProps(result)
+            })
     }
 
     onSubmit(event) {
@@ -48,11 +66,11 @@ class Login extends Component {
 
         fetch(myRequest)
             .then(response => {
-               return response.json()
+                return response.json()
             })
             .then(result => {
-                console.log(result)
-                this.changeProps(result)
+                localStorage.setItem("Authorization", result.auth_token)
+                this.login();
             })
 
         event.preventDefault();
@@ -81,7 +99,7 @@ class Login extends Component {
                             <span>
                                 <label>Password </label>
                                 <input
-                                    type="text"
+                                    type="password"
                                     onChange={this.onPassChange}
                                 />
                             </span><br />

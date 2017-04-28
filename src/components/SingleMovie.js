@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import '../App.css';
+import { Button } from 'react-bootstrap';
 
 let BASE_API = "https://api.themoviedb.org/3/movie/";
 let API_KEY = "0649ca7815178f68273bfb149e7716cc";
 let IMAGE = "http://image.tmdb.org/t/p/";
+
+let RAILS_API_BASE = "https://peaceful-reef-40428.herokuapp.com/"
+
+var myHeaders = new Headers()
+myHeaders.append("Authorization", localStorage.getItem("Authorization"));
 
 class SingleMovie extends Component {
     constructor(props) {
@@ -18,6 +24,8 @@ class SingleMovie extends Component {
         this.getCredits = this.getCredits.bind(this);
         this.setMovie = this.setMovie.bind(this);
         this.setCredits = this.setCredits.bind(this);
+        this.addToSeen = this.addToSeen.bind(this);
+        this.addToWatch = this.addToWatch.bind(this);
     }
 
     getCredits() {
@@ -35,6 +43,22 @@ class SingleMovie extends Component {
                 this.setMovie(result)
                 this.getCredits();
             });
+    }
+
+    addToSeen() {
+        const { movie } = this.state;
+        let route = `${RAILS_API_BASE}seen_movies.json?title=${movie.original_title}&id=${movie.id}&poster_path=${movie.poster_path}`
+        fetch(`${route}`, { method: 'POST', headers: myHeaders })
+            .then()
+    }
+
+    addToWatch() {
+        fetch(`${RAILS_API_BASE}wished_movies.json?title=${this.state.movie.original_title}&id=${this.state.movie.id}&poster_path=${this.state.movie.poster_path}`,
+            {
+                method: 'POST',
+                headers: myHeaders
+            })
+            .then()
     }
 
     setMovie(result) {
@@ -62,6 +86,8 @@ class SingleMovie extends Component {
 
                 <div className="movie-body" >
                     <p className="movie-body-overview"> {this.state.movie.overview} </p>
+                    <Button onClick={this.addToSeen}>Add to seen list</Button>
+                    <Button onClick={this.addToWatch}>Add to watch list</Button>
                     <h3>Credits</h3><br />
                     <div>
                         {this.state.credits.map((item, index) =>

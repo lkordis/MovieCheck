@@ -14,21 +14,17 @@ import MovieGridWrapper from './helpers/MovieGridWrapper';
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      user: {
-        name: "",
-        lastName: "",
-        email: "",
-        id: "",
-      },
-      isOpen: false
+      shouldReload: false
     }
+
+    this.onUserChange = this.onUserChange.bind(this);
   }
 
-  toggleModal = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
+  onUserChange() {
+    this.setState({ shouldReload: !this.state.shouldReload })
+    location.reload();
   }
 
   render() {
@@ -37,12 +33,13 @@ class App extends Component {
         <div className="App">
           <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
           <link href="https://fonts.googleapis.com/css?family=Monoton|Raleway" rel="stylesheet" />
-          <NavbarInstance />
+          <NavbarInstance onUserChange={this.onUserChange} />
           <Route path="/movie/:movieId" component={SingleMovie} />
           <Route path="/users/:userId" component={UserProfile} />
           <Route exact={true} path="/" component={MovieGridWrapper} />
           <Route exact={true} path="/login" component={Login} />
           <Route exact={true} path="/register" component={Register} />
+          <Route exact={true} path="/reviews"  />
         </div>
       </BrowserRouter>
     );

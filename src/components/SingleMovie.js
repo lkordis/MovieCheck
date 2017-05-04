@@ -76,18 +76,27 @@ class SingleMovie extends Component {
     render() {
         //let mini = `${IMAGE}w45/${this.state.movie.backdrop_path}`;
         let originalBackdrop = `${IMAGE}original/${this.state.movie.backdrop_path}`;
+        let addToSeenBtn = null;
+        let addToWatchBtn = null;
+
+        if (localStorage.getItem("Authorization")) {
+            addToSeenBtn = <Button onClick={this.addToSeen}>Add to seen list</Button>
+            addToWatchBtn = <Button onClick={this.addToWatch}>Add to watch list</Button>
+        }
 
         return (
             <div id="movie-img" className="singleMovie-image"
                 style={{
-                    backgroundImage: 'url(' + `${originalBackdrop}` + ')'
+                    backgroundImage: 'url('.concat(`${originalBackdrop}`, ')')
                 }}>
                 <p className="singleMovie">{this.state.movie.original_title}</p>
 
                 <div className="movie-body" >
                     <p className="movie-body-overview"> {this.state.movie.overview} </p>
-                    <Button onClick={this.addToSeen}>Add to seen list</Button>
-                    <Button onClick={this.addToWatch}>Add to watch list</Button>
+                    <div >
+                        {addToSeenBtn}
+                        {addToWatchBtn}
+                    </div>
                     <h3>Credits</h3><br />
                     <div>
                         {this.state.credits.map((item, index) =>

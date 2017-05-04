@@ -45,6 +45,7 @@ class NavbarInstance extends Component {
   logout() {
     localStorage.removeItem("Authorization")
     this.setState({ logged_in: false, user: {} })
+    this.props.onUserChange();
   }
 
   isLoggedIn() {
@@ -76,6 +77,8 @@ class NavbarInstance extends Component {
       },
       logged_in: true
     })
+
+    this.props.onUserChange();
   }
 
   componentWillMount() {
@@ -115,6 +118,10 @@ class NavbarInstance extends Component {
       </Navbar>
     )
   }
+}
+
+NavbarInstance.propTypes = {
+  onUserChange: React.PropTypes.func.isRequired
 }
 
 export default NavbarInstance;

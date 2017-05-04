@@ -1,5 +1,3 @@
-import UserApiData from './UserApiData'
-
 let API_KEY = "0649ca7815178f68273bfb149e7716cc";
 let DISCOVER_ROUTE = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=`;
 let RAIL_BASE = "https://peaceful-reef-40428.herokuapp.com/user_movies.json"
@@ -42,6 +40,7 @@ class DiscoverApiData {
     }
 
     getInitialApiData(callback) {
+        this.fetchData(callback);
         this.fetchData(callback);
     }
 

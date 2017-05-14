@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
-
-let IMAGE_PATH = "https://image.tmdb.org/t/p/w154";
+import { IMAGE_PATH_W154 } from '../constants'
 
 class MovieTile extends Component {
     constructor(props) {
@@ -14,7 +13,7 @@ class MovieTile extends Component {
 
     render() {
         var src = IMAGE_PATH.concat(this.state.movie.poster_path);
-        
+
         return (
             <figure className="grid-figure">
                 <div className="grid-photo-wrap">

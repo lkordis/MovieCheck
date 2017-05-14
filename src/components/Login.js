@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { Button, Modal } from 'react-bootstrap';
-
-let RAILS_API_BASE = "https://peaceful-reef-40428.herokuapp.com/login.json"
+import {RAILS_API_BASE_LOGIN} from '../constants'
 
 class Login extends Component {
     constructor(props) {

@@ -1,5 +1,6 @@
-let API_KEY = "0649ca7815178f68273bfb149e7716cc";
-let DISCOVER_ROUTE = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=`;
+import {TMDB_API_KEY} from '../config'
+
+let DISCOVER_ROUTE = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=`;
 let RAIL_BASE = "https://peaceful-reef-40428.herokuapp.com/user_movies.json"
 
 var myHeaders = new Headers()
@@ -15,7 +16,8 @@ class DiscoverApiData {
     }
 
     fetchData(callback) {
-        if (localStorage.getItem("Authorization")) {
+        localStorage.getItem("Authorization")
+        if (localStorage.getItem("Authorization") != null) {
             fetch(`${RAIL_BASE}`, { headers: myHeaders })
                 .then(rails_response => { return rails_response.json() })
                 .then(user_movies => {

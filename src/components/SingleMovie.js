@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { Button } from 'react-bootstrap';
-
-let BASE_API = "https://api.themoviedb.org/3/movie/";
-let API_KEY = "0649ca7815178f68273bfb149e7716cc";
-let IMAGE = "http://image.tmdb.org/t/p/";
-
-let RAILS_API_BASE = "https://peaceful-reef-40428.herokuapp.com/"
+import { Link } from 'react-router-dom';
+import { TMDB_API_KEY } from '../config'
+import { TMDB_BASE_MOVIE, IMAGE_PATH_PATH, RAILS_API } from '../constants'
 
 var myHeaders = new Headers()
 myHeaders.append("Authorization", localStorage.getItem("Authorization"));
@@ -29,7 +26,7 @@ class SingleMovie extends Component {
     }
 
     getCredits() {
-        let CREDITS = `${BASE_API}${this.state.movie.id}/credits?api_key=${API_KEY}`
+        let CREDITS = `${TMDB_BASE_MOVIE}${this.state.movie.id}/credits?api_key=${TMDB_API_KEY}`
 
         fetch(`${CREDITS}`)
             .then(response => response.json())
@@ -37,7 +34,7 @@ class SingleMovie extends Component {
     }
 
     getApiData() {
-        fetch(`${BASE_API}${this.props.match.params.movieId}?language=en-US&api_key=${API_KEY}`)
+        fetch(`${TMDB_BASE_MOVIE}${this.props.match.params.movieId}?language=en-US&api_key=${TMDB_API_KEY}`)
             .then(response => response.json())
             .then(result => {
                 this.setMovie(result)
@@ -47,13 +44,13 @@ class SingleMovie extends Component {
 
     addToSeen() {
         const { movie } = this.state;
-        let route = `${RAILS_API_BASE}seen_movies.json?title=${movie.original_title}&id=${movie.id}&poster_path=${movie.poster_path}`
+        let route = `${RAILS_API}seen_movies.json?title=${movie.original_title}&id=${movie.id}&poster_path=${movie.poster_path}`
         fetch(`${route}`, { method: 'POST', headers: myHeaders })
             .then()
     }
 
     addToWatch() {
-        fetch(`${RAILS_API_BASE}wished_movies.json?title=${this.state.movie.original_title}&id=${this.state.movie.id}&poster_path=${this.state.movie.poster_path}`,
+        fetch(`${RAILS_API}wished_movies.json?title=${this.state.movie.original_title}&id=${this.state.movie.id}&poster_path=${this.state.movie.poster_path}`,
             {
                 method: 'POST',
                 headers: myHeaders
@@ -74,20 +71,22 @@ class SingleMovie extends Component {
     }
 
     render() {
-        //let mini = `${IMAGE}w45/${this.state.movie.backdrop_path}`;
-        let originalBackdrop = `${IMAGE}original/${this.state.movie.backdrop_path}`;
+        //let mini = `${IMAGE_PATH}w45/${this.state.movie.backdrop_path}`;
+        let originalBackdrop = `${IMAGE_PATH}original/${this.state.movie.backdrop_path}`;
         let addToSeenBtn = null;
         let addToWatchBtn = null;
+        let addReviewBtn = null;
 
         if (localStorage.getItem("Authorization")) {
             addToSeenBtn = <Button onClick={this.addToSeen}>Add to seen list</Button>
             addToWatchBtn = <Button onClick={this.addToWatch}>Add to watch list</Button>
+            addReviewBtn = <Link to={`/new_review/${this.state.movie.id}`}><Button onClick={this.addReview}>Add a review</Button></Link>
         }
 
         return (
-            <div id="movie-img" className="singleMovie-image"
+            <div id="movie-img" className="singleMovie-IMAGE_PATH"
                 style={{
-                    backgroundImage: 'url('.concat(`${originalBackdrop}`, ')')
+                    backgroundIMAGE_PATH: 'url('.concat(`${originalBackdrop}`, ')')
                 }}>
                 <p className="singleMovie">{this.state.movie.original_title}</p>
 
@@ -96,6 +95,8 @@ class SingleMovie extends Component {
                     <div >
                         {addToSeenBtn}
                         {addToWatchBtn}
+                        {addReviewBtn}
+
                     </div>
                     <h3>Credits</h3><br />
                     <div>

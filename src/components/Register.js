@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import '../App.css';
-
-let RAILS_API_BASE = "https://peaceful-reef-40428.herokuapp.com/users.json"
+import { RAILS_API_USERS } from '../constants'
 
 class Register extends Component {
     constructor(props) {
@@ -54,7 +53,7 @@ class Register extends Component {
 
     onSubmit(event) {
         const { email, password, name, lastName } = this.state;
-        let login_API = `${RAILS_API_BASE}?email=${email}&password=${password}&name=${name}&lastName=${lastName}`
+        let login_API = `${RAILS_API_USERS}?email=${email}&password=${password}&name=${name}&lastName=${lastName}`
 
         var myInit = {
             method: 'POST'
@@ -64,7 +63,7 @@ class Register extends Component {
 
         fetch(myRequest)
             .then(response => {
-                return response.json() 
+                return response.json()
             })
             .then(result => {
                 this.changeProps(result)

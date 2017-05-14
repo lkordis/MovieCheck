@@ -89,13 +89,15 @@ class NavbarInstance extends Component {
     let logAction = null;
     let register = null;
     let currentUser = null;
+    let reviews = null;
 
     if (!this.state.logged_in) {
-      logAction = <NavItem onClick={this.toggleModalLogin} >Prijava</NavItem>
-      register = <NavItem onClick={this.toggleModalRegister}>Registracija</NavItem>
+      logAction = <NavItem onClick={this.toggleModalLogin} >Login</NavItem>
+      register = <NavItem onClick={this.toggleModalRegister}>Register</NavItem>
     } else {
       logAction = <NavItem onClick={this.logout}>Odjava</NavItem>
       currentUser = <NavItem ><Link to={`/users/${this.state.user.id}`}>{this.state.user.name} {this.state.user.lastName}</Link></NavItem >
+      reviews = <NavItem ><Link to={'/reviews'}>Reviews</Link></NavItem>
     }
 
     return (
@@ -113,6 +115,7 @@ class NavbarInstance extends Component {
             {currentUser}
             {logAction}
             {register}
+            {reviews}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

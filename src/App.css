@@ -23,6 +23,21 @@
    position: relative;
 }
 
+.review-grid {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  max-width: 35%;
+  margin: auto;
+}
+
+.review-tile {
+  border-radius: 25px;
+  background-color: #564e4e;
+  margin: auto;
+  position: relative;
+}
+
 html { 
   background-color: #222;
   -webkit-background-size: cover;
@@ -65,6 +80,10 @@ html {
   margin-top: -10%;
   margin-bottom: 10%; 
   font-size: 1.35em;
+}
+
+.navbar {
+  background-color: whitesmoke
 }
 
 

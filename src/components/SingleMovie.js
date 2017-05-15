@@ -72,7 +72,8 @@ class SingleMovie extends Component {
 
     render() {
         //let mini = `${IMAGE_PATH}w45/${this.state.movie.backdrop_path}`;
-        let originalBackdrop = `${IMAGE_PATH}original/${this.state.movie.backdrop_path}`;
+        let originalBackdrop = `${IMAGE_PATH}original${this.state.movie.backdrop_path}`;
+        console.log(originalBackdrop)
         let addToSeenBtn = null;
         let addToWatchBtn = null;
         let addReviewBtn = null;
@@ -84,9 +85,9 @@ class SingleMovie extends Component {
         }
 
         return (
-            <div id="movie-img" className="singleMovie-IMAGE_PATH"
+            <div id="movie-img" className="singleMovie-image"
                 style={{
-                    backgroundIMAGE_PATH: 'url('.concat(`${originalBackdrop}`, ')')
+                    backgroundImage: 'url('.concat(`${originalBackdrop}`, ')')
                 }}>
                 <p className="singleMovie">{this.state.movie.original_title}</p>
 

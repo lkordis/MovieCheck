@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReviewTile from './ReviewTile'
+import UserGrid from './UserGrid'
 
 import '../App.css';
 
@@ -28,6 +29,7 @@ class ReviewGrid extends Component {
 
         return (
             <div className="review-grid">
+                <UserGrid /><br/>
                 {reviews.map((item, index) =>
                     <div key={index}>
                         <ReviewTile props={item} />

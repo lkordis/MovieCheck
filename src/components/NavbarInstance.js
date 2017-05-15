@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Button, FormControl, FormGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import Login from './Login';
@@ -20,7 +20,8 @@ class NavbarInstance extends Component {
         lastName: "",
         id: ""
       },
-      logged_in: false
+      logged_in: false,
+      search_term: ''
     }
 
     this.toggleModalLogin = this.toggleModalLogin.bind(this)
@@ -28,6 +29,7 @@ class NavbarInstance extends Component {
     this.onUserChange = this.onUserChange.bind(this)
     this.logout = this.logout.bind(this)
     this.isLoggedIn = this.isLoggedIn.bind(this)
+    this.onSearchChange = this.onSearchChange.bind(this)
   }
 
   toggleModalLogin = () => {
@@ -46,6 +48,7 @@ class NavbarInstance extends Component {
     localStorage.removeItem("Authorization")
     this.setState({ logged_in: false, user: {} })
     this.props.onUserChange();
+    window.location.replace("/");
   }
 
   isLoggedIn() {
@@ -85,6 +88,10 @@ class NavbarInstance extends Component {
     this.isLoggedIn();
   }
 
+  onSearchChange(event) {
+    this.setState({ search_term: event.target.value })
+  }
+
   render() {
     let logAction = null;
     let register = null;
@@ -108,6 +115,13 @@ class NavbarInstance extends Component {
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
+        <Navbar.Form pullLeft>
+          <FormGroup>
+            <FormControl type="text" placeholder="Search" onChange={this.onSearchChange} />
+          </FormGroup>
+          {' '}
+          <Button type="submit"><Link to={`/search/${this.state.search_term}`}>Submit</ Link></Button>
+        </Navbar.Form>
         <Navbar.Collapse>
           <Nav pullRight>
             <Login show={this.state.isOpenLogin} onClose={this.toggleModalLogin} onUserChange={this.onUserChange} />

@@ -38,7 +38,7 @@ class Login extends Component {
     }
 
     login() {
-        let login_API = `${RAILS_API_BASE}?`
+        let login_API = `${RAILS_API_BASE_LOGIN}?`
 
         var myHeaders = new Headers()
         myHeaders.append("Authorization", localStorage.getItem("Authorization"))
@@ -60,7 +60,7 @@ class Login extends Component {
             method: 'POST'
         };
 
-        let login_API = `${RAILS_API_BASE}?email=${email}&password=${password}`
+        let login_API = `${RAILS_API_BASE_LOGIN}?email=${email}&password=${password}`
         var myRequest = new Request(`${login_API}`, myInit);
 
         fetch(myRequest)

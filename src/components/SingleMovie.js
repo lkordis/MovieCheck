@@ -3,7 +3,7 @@ import '../App.css';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { TMDB_API_KEY } from '../config'
-import { TMDB_BASE_MOVIE, IMAGE_PATH_PATH, RAILS_API } from '../constants'
+import { TMDB_BASE_MOVIE, IMAGE_PATH, RAILS_API } from '../constants'
 
 var myHeaders = new Headers()
 myHeaders.append("Authorization", localStorage.getItem("Authorization"));

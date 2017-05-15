@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
+import request from 'superagent';
 import '../App.css';
-import { RAILS_API_USERS } from '../constants'
+
+import { RAILS_API_USERS, CLOUDINARY_UPLOAD } from '../constants'
+import { CLOUDINARY } from '../config'
 
 class Register extends Component {
     constructor(props) {
@@ -10,7 +14,9 @@ class Register extends Component {
             email: "",
             password: "",
             name: "",
-            lastName: ""
+            lastName: "",
+            user_image: '',
+            original_fileName: ''
         }
 
         this.onEmailChange = this.onEmailChange.bind(this);
@@ -20,6 +26,34 @@ class Register extends Component {
 
         this.onSubmit = this.onSubmit.bind(this);
         this.changeProps = this.changeProps.bind(this);
+        this.onImageDrop = this.onImageDrop.bind(this);
+        this.handleImageUpload = this.handleImageUpload.bind(this);
+        this.close = this.close.bind(this)
+    }
+
+    onImageDrop(files) {        
+        this.setState({
+            original_fileName: files[0].name
+        })
+        this.handleImageUpload(files[0]);
+    }
+
+    handleImageUpload(file) {
+        const upload = request.post(CLOUDINARY_UPLOAD)
+            .field('upload_preset', CLOUDINARY.CLOUDINARY_UPLOAD_PRESET)
+            .field('file', file);
+
+        upload.end((err, response) => {
+            if (err) {
+                console.error(err);
+            }
+
+            if (response.body.secure_url !== '') {
+                this.setState({
+                    user_image: response.body.secure_url
+                });
+            }
+        });
     }
 
     onEmailChange(event) {
@@ -51,9 +85,21 @@ class Register extends Component {
         this.props.onClose()
     }
 
+    close() {
+        this.setState({
+            email: "",
+            password: "",
+            name: "",
+            lastName: "",
+            user_image: ''
+        })
+
+        this.props.onClose()
+    }
+
     onSubmit(event) {
-        const { email, password, name, lastName } = this.state;
-        let login_API = `${RAILS_API_USERS}?email=${email}&password=${password}&name=${name}&lastName=${lastName}`
+        const { email, password, name, lastName, user_image } = this.state;
+        let login_API = `${RAILS_API_USERS}?email=${email}&password=${password}&name=${name}&lastName=${lastName}&user_image=${user_image}`
 
         var myInit = {
             method: 'POST'
@@ -101,6 +147,20 @@ class Register extends Component {
                                 type="password"
                                 onChange={this.onPassChange}
                             /><br />
+                            <Dropzone
+                                multiple={false}
+                                accept="image/*"
+                                onDrop={this.onImageDrop}>
+                                <p>Drop an image or click to select a file to upload.</p>
+                            </Dropzone>
+                            <div>
+                                {this.state.user_image === '' ? null :
+                                    <div>
+                                        <p>{this.state.original_fileName}</p>
+                                        <img src={this.state.user_image} alt={this.state.user_image} width="100" height="100" />
+                                    </div>
+                                }
+                            </div>
                             <button type="submit">
                                 Register
                             </button>
@@ -108,7 +168,7 @@ class Register extends Component {
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.props.onClose}>Close</Button>
+                        <Button onClick={this.close}>Close</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

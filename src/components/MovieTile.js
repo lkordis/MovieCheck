@@ -12,7 +12,7 @@ class MovieTile extends Component {
     }
 
     render() {
-        var src = IMAGE_PATH.concat(this.state.movie.poster_path);
+        var src = IMAGE_PATH_W154.concat(this.state.movie.poster_path);
 
         return (
             <figure className="grid-figure">

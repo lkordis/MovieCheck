@@ -88,6 +88,8 @@ class NavbarInstance extends Component {
 
   onSearchChange(event) {
     this.setState({ search_term: event.target.value })
+    var custom  = new CustomEvent('search', { 'detail': event.target.value });
+    dispatchEvent(custom)
   }
 
   render() {

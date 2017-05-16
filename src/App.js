@@ -58,7 +58,7 @@ class App extends Component {
           <Route exact={true} path="/reviews/:reviewId" />
           <Route exact={true} path="/new_review/:movieId" component={NewReview} />
           <Route exact={true} path="/reviews/:reviewId" component={SingleReview} />
-          <Route exact={true} path="/search/:query" component={SearchGrid}/>
+          <Route exact={true} path="/search" component={SearchGrid}/>
         </div>
       </BrowserRouter>
     );

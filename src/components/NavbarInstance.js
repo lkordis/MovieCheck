@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem, Button, FormControl, FormGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { RAILS_API_BASE_LOGIN } from '../constants'
 
 import Login from './Login';
 import Register from './Register';
@@ -52,11 +53,10 @@ class NavbarInstance extends Component {
   }
 
   isLoggedIn() {
-    let RAILS_API_BASE = "https://peaceful-reef-40428.herokuapp.com/login.json"
     var myHeaders = new Headers()
     myHeaders.append("Authorization", localStorage.getItem("Authorization"));
 
-    fetch(`${RAILS_API_BASE}`, { headers: myHeaders })
+    fetch(`${RAILS_API_BASE_LOGIN}`, { headers: myHeaders })
       .then(response => response.json())
       .then(response => {
         if (response.error) {
@@ -65,8 +65,6 @@ class NavbarInstance extends Component {
         else {
           this.setState({ logged_in: true, user: response })
         }
-        console.log(response)
-        console.log(localStorage.getItem("Authorization"))
       })
   }
 
@@ -120,7 +118,7 @@ class NavbarInstance extends Component {
             <FormControl type="text" placeholder="Search" onChange={this.onSearchChange} />
           </FormGroup>
           {' '}
-          <Button type="submit"><Link to={`/search/${this.state.search_term}`}>Submit</ Link></Button>
+          <Link to={`/search/${this.state.search_term}`}><Button type="submit">Submit</Button></ Link>
         </Navbar.Form>
         <Navbar.Collapse>
           <Nav pullRight>

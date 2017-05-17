@@ -1,58 +1,46 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { TMDB_API_KEY } from '../config'
-import Tmdb from 'tmdbapi'
+import Limiter from 'limiter'
 
 import $ from "jquery";
 
 import MovieTile from './MovieTile';
+import FilterMovies from './FilterMovies'
 import DiscoverApiData from '../helpers/ApiData.js'
 
 class MovieGrid extends Component {
     constructor(props) {
         super(props);
 
-        this.tmdb = new Tmdb({
-            apiv3: TMDB_API_KEY
-        })
+        this.limiter = new Limiter.RateLimiter(40, 10000)
 
         this.state = {
             movies: [],
             searching: false,
-            currentPage: 1,
-            pages: 1,
-            query: '',
+            genreId: ''
         };
 
         this.setMovies = this.setMovies.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
-        this.search = this.search.bind(this);
 
         addEventListener('search', (e) => {
-            this.setState({ movies: [] })
-            this.search(e.detail).then(results => {
-                var movies = results.results.filter(value => {
-                    return value.media_type !== 'tv' && value.media_type !== 'person'// I'll use that in the future
+            if (e.detail === '') {
+                this.setState({ searching: false, movies: [] })
+                this.props.props.page = 1
+                this.props.getInitialApiData(this.setMovies);
+                sessionStorage.setItem('query', e.detail)
+            } else {
+                this.limiter.removeTokens(1, () => {
+                    this.setState({ searching: true, movies: [] })
+                    sessionStorage.setItem('query', e.detail)
+                    this.props.search.search(e.detail).then((results) => {
+                        this.setState({ movies: results })
+                    })
+                    this.props.search.search(e.detail).then((results) => {
+                        this.setMovies(results)
+                    })
                 })
-                if (e.detail === "") {
-                    this.props.getApiData(this.setMovies)
-                    this.props.getApiData(this.setMovies)
-
-                    this.setState({
-                        query: e.detail,
-                        pages: results.total_pages,
-                        searching: false
-                    })
-                } else {
-                    this.setState({
-                        movies: this.state.movies.concat(movies),
-                        query: e.detail,
-                        pages: results.total_pages,
-                        searching: true,
-                        currentPage: 1
-                    })
-                }
-            })
+            }
         })
     }
 
@@ -64,28 +52,15 @@ class MovieGrid extends Component {
                 this.props.getApiData(this.setMovies)
             }
         } else if (this.state.searching) {
-            if ($(document).height() - win.height() === win.scrollTop() && this.state.currentPage <= this.state.pages) {
-                console.log('Upao')
-                this.setState({ currentPage: ++this.state.currentPage })
-                console.log(this.state.currentPage)
-                this.search(this.state.query, this.state.currentPage).then(results => {
-                    var movies = results.results.filter(value => {
-                        return value.media_type !== 'tv' && value.media_type !== 'person'// I'll use that in the future
-                    })
-                    this.setMovies(movies)
+            if ($(document).height() - win.height() === win.scrollTop()) {
+                var custom = new CustomEvent('page_end', { detail: sessionStorage.getItem('query') })
+                dispatchEvent(custom)
+
+                this.props.search.search(sessionStorage.getItem('query')).then(results => {
+                    this.setMovies(results)
                 })
             }
         }
-    }
-
-    search(query, page = 1) {
-        return new Promise((resolve, reject) => {
-            this.tmdb.search.multi({ query: query, page }).then(result => {
-                resolve(result)
-            }).catch(error => {
-                reject(error)
-            })
-        })
     }
 
     componentDidMount() {
@@ -103,7 +78,17 @@ class MovieGrid extends Component {
     }
 
     componentWillMount() {
-        if (!this.state.searching) this.props.getInitialApiData(this.setMovies);
+        console.log(sessionStorage.getItem('query'))
+        if (!this.state.searching && (sessionStorage.getItem('query') == null || sessionStorage.getItem('query') === '')) {
+            this.props.getInitialApiData(this.setMovies);
+        } else if (sessionStorage.getItem('query')) {
+            this.props.search.search(sessionStorage.getItem('query')).then(results => {
+                this.setState({ movies: results })
+            })
+            this.props.search.search(sessionStorage.getItem('query')).then(results => {
+                this.setMovies(results)
+            })
+        }
     }
 
     render() {
@@ -112,12 +97,15 @@ class MovieGrid extends Component {
         } = this.state;
 
         return (
-            <div className="photo-grid">
-                {movies.map((item, index) =>
-                    <div key={index}>
-                        <MovieTile props={item} />
-                    </div>
-                )}
+            <div>
+                <FilterMovies />
+                <div className="photo-grid">
+                    {movies.map((item, index) =>
+                        <div key={index}>
+                            <MovieTile props={item} />
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
@@ -125,7 +113,7 @@ class MovieGrid extends Component {
 
 MovieGrid.propTypes = {
     getApiData: React.PropTypes.func.isRequired,
-    getInitialApiData: React.PropTypes.func.isRequired
+    getInitialApiData: React.PropTypes.func.isRequired,
 };
 
 export default MovieGrid;

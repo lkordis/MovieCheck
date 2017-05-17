@@ -8,7 +8,7 @@ myHeaders.append("Authorization", localStorage.getItem("Authorization"));
 
 class DiscoverApiData {
     constructor(route) {
-        this.page = 2;
+        this.page = 1;
 
         this.fetchData = this.fetchData.bind(this);
         this.getApiData = this.getApiData.bind(this);
@@ -20,7 +20,6 @@ class DiscoverApiData {
         if (localStorage.getItem("Authorization") != null) {
             fetch(`${RAIL_BASE}`, { headers: myHeaders })
                 .then(rails_response => { 
-                    console.log(rails_response)
                     if(rails_response.statusText === 'Unauthorized') return [];
                     return rails_response.json() 
                 })

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
 import '../App.css';
 import { RAILS_API } from '../constants'
 

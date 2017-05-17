@@ -9,7 +9,6 @@ import NavbarInstance from './components/NavbarInstance';
 import UserProfile from './components/UserProfile';
 import NewReview from './components/NewReview';
 import SingleReview from './components/SingleReview';
-import SearchGrid from './components/SearchGrid'
 
 import MovieGridWrapper from './helpers/MovieGridWrapper';
 import ReviewGridWrapper from './helpers/ReviewGridWrapper';
@@ -58,7 +57,6 @@ class App extends Component {
           <Route exact={true} path="/reviews/:reviewId" />
           <Route exact={true} path="/new_review/:movieId" component={NewReview} />
           <Route exact={true} path="/reviews/:reviewId" component={SingleReview} />
-          <Route exact={true} path="/search" component={SearchGrid}/>
         </div>
       </BrowserRouter>
     );

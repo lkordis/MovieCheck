@@ -22,6 +22,7 @@ class MovieGrid extends Component {
 
         this.setMovies = this.setMovies.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
+        this.changeGenre = this.changeGenre.bind(this)
 
         addEventListener('search', (e) => {
             if (e.detail === '') {
@@ -91,14 +92,23 @@ class MovieGrid extends Component {
         }
     }
 
+    changeGenre(id) {
+        console.log(id)
+        this.setState({
+            movies: this.state.movies.filter((item) => {
+                return item.genre_ids.includes(parseInt(id,10))
+            })
+        })
+    }
+
     render() {
         const {
-            movies
+            movies,
         } = this.state;
 
         return (
             <div>
-                <FilterMovies />
+                <FilterMovies changeGenre={this.changeGenre} />
                 <div className="photo-grid">
                     {movies.map((item, index) =>
                         <div key={index}>

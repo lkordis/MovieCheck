@@ -6,6 +6,13 @@ import { DropdownButton, MenuItem } from 'react-bootstrap'
 class FilterMovies extends Component {
     constructor(props) {
         super(props)
+
+        this.changeGenre = this.changeGenre.bind(this)
+    }
+
+    changeGenre(event) {
+        console.log(event.target.id)
+        this.props.changeGenre(event.target.id)
     }
 
     render() {
@@ -14,7 +21,7 @@ class FilterMovies extends Component {
                 <DropdownButton bsStyle='default' title="Genre" id='dropdown-size-medium'>
                     {MOVIE_GENRES.map((item, index) =>
                         <div key={index}>
-                            <MenuItem>{item.name}</MenuItem>
+                            <MenuItem onClick={this.changeGenre} id={item.id}>{item.name}</MenuItem>
                         </div>
                     )}
                 </DropdownButton>

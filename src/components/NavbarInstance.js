@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, Button, FormControl, FormGroup } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, FormControl, FormGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RAILS_API_BASE_LOGIN } from '../constants'
 
@@ -119,10 +119,9 @@ class NavbarInstance extends Component {
         </Navbar.Header>
         <Navbar.Form pullLeft>
           <FormGroup>
-            <FormControl type="text" placeholder="Search" onChange={this.onSearchChange} />
+            <FormControl type="text" placeholder="Search" onChange={this.onSearchChange}/>
           </FormGroup>
           {' '}
-          <Link to={`/search/${this.state.search_term}`}><Button type="submit">Submit</Button></ Link>
         </Navbar.Form>
         <Navbar.Collapse>
           <Nav pullRight>

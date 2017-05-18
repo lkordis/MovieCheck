@@ -25,7 +25,6 @@ export class SearchMovie {
                 this.total_pages = result.total_pages
                 this.query = query
 
-                console.log(result)
                 resolve(result.results)
             })
         })

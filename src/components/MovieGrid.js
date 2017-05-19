@@ -7,6 +7,7 @@ import $ from "jquery";
 import MovieTile from './MovieTile';
 import FilterMovies from './FilterMovies'
 import DiscoverApiData from '../helpers/ApiData.js'
+import { SearchMovie } from '../helpers/SearchData.js'
 
 class MovieGrid extends Component {
     constructor(props) {
@@ -22,7 +23,9 @@ class MovieGrid extends Component {
 
         this.setMovies = this.setMovies.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
-        this.changeGenre = this.changeGenre.bind(this)
+        this.changeGenre = this.changeGenre.bind(this);
+        this.changeYear = this.changeYear.bind(this);
+
 
         addEventListener('search', (e) => {
             if (e.detail === '') {
@@ -37,9 +40,11 @@ class MovieGrid extends Component {
                     this.props.search.search(e.detail).then((results) => {
                         this.setState({ movies: results })
                     })
-                    this.props.search.search(e.detail).then((results) => {
-                        this.setMovies(results)
-                    })
+                    if (this.props.search instanceof SearchMovie) {
+                        this.props.search.search(e.detail).then((results) => {
+                            this.setMovies(results)
+                        })
+                    }
                 })
             }
         })
@@ -79,7 +84,6 @@ class MovieGrid extends Component {
     }
 
     componentWillMount() {
-        console.log(sessionStorage.getItem('query'))
         if (!this.state.searching && (sessionStorage.getItem('query') == null || sessionStorage.getItem('query') === '')) {
             this.props.getInitialApiData(this.setMovies);
         } else if (sessionStorage.getItem('query')) {
@@ -93,11 +97,28 @@ class MovieGrid extends Component {
     }
 
     changeGenre(id) {
-        console.log(id)
-        this.setState({
-            movies: this.state.movies.filter((item) => {
-                return item.genre_ids.includes(parseInt(id,10))
-            })
+        this.props.searchDiscover({ 'primary_release_date.gte': '', 'primary_release_date.lte': '', with_genres: id }).then(result => {
+            this.setState({
+                movies: []
+            });
+            this.setState({
+                movies: result
+            });
+        })
+    }
+
+    changeYear(span) {
+        var parts = span.split(',')
+        var lower = parts[0]
+        var higher = parts[1]
+
+        this.props.searchDiscover({ 'primary_release_date.gte': lower, 'primary_release_date.lte': higher, with_genres: '' }).then(result => {
+            this.setState({
+                movies: []
+            });
+            this.setState({
+                movies: result
+            });
         })
     }
 
@@ -108,7 +129,7 @@ class MovieGrid extends Component {
 
         return (
             <div>
-                <FilterMovies changeGenre={this.changeGenre} />
+                <FilterMovies changeGenre={this.changeGenre} changeYear={this.changeYear} />
                 <div className="photo-grid">
                     {movies.map((item, index) =>
                         <div key={index}>

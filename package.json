@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "bootstrap-slider": "^9.8.0",
     "limiter": "^1.1.0",
     "moviedb": "^0.2.8",
     "prop-types": "^15.5.10",

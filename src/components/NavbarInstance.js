@@ -89,9 +89,8 @@ class NavbarInstance extends Component {
   onSearchChange(event) {
     this.setState({ search_term: event.target.value })
     var custom = new CustomEvent('search', { 'detail': event.target.value });
-    console.log('Custom', custom.detail)
     dispatchEvent(custom)
-    if (window.location.pathname.split('/').pop() !== '') window.location.replace('/')
+    // if (window.location.pathname.split('/').pop() !== '') window.location.replace('/')
   }
 
   render() {

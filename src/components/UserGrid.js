@@ -39,13 +39,16 @@ class UserGrid extends Component {
                 slidesToScroll: 4
             };
             slider =
-                <Slider {...settings}>
-                    {this.state.users.map((item, index) =>
-                        <div key={index}>
-                            <UserTile props={item} />
-                        </div>
-                    )}
-                </Slider>
+                <div>
+                    <h2>Recommended users</h2><br />
+                    <Slider {...settings}>
+                        {this.state.users.map((item, index) =>
+                            <div key={index}>
+                                <UserTile props={item} />
+                            </div>
+                        )}
+                    </Slider>
+                </div>
         }
 
         return (

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import ReviewGrid from '../components/ReviewGrid';
-import UserApiData from './UserApiData.js'
+import UserApiData from '../helpers/UserApiData.js'
 
 class ReviewGridWrapper extends Component {
     render() {

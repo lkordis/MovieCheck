@@ -3,6 +3,12 @@ import { Button, Image } from 'react-bootstrap';
 import '../App.css';
 import { RAILS_API } from '../constants'
 
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
+global.jQuery = $;
+var bootstrap = require('bootstrap');
+
 var myHeaders = new Headers()
 myHeaders.append("Authorization", localStorage.getItem("Authorization"));
 
@@ -31,14 +37,20 @@ class UserTile extends Component {
                 style={{
                     width: 75 + 'px',
                     height: 75 + 'px'
-                }} circle responsive />
+                }} circle responsive/>
         }
 
         return (
-            <div>
-                {image}
-                <p>{this.state.user.name}{this.state.user.lastName}</p>
-                <Button onClick={this.followUser}>Follow</Button>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-xs-4">
+                        {image}
+                    </div>
+                    <div className="col-xs-8">
+                        <p>{this.state.user.name}{this.state.user.lastName}</p>
+                        <Button onClick={this.followUser}>Follow</Button>
+                    </div>
+                </div>
             </div>
         )
     }

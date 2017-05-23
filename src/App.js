@@ -10,8 +10,8 @@ import UserProfile from './components/UserProfile';
 import NewReview from './components/NewReview';
 import SingleReview from './components/SingleReview';
 
-import MovieGridWrapper from './helpers/MovieGridWrapper';
-import ReviewGridWrapper from './helpers/ReviewGridWrapper';
+import MovieGridWrapper from './components/MovieGridWrapper';
+import ReviewGridWrapper from './components/ReviewGridWrapper';
 
 class App extends Component {
   constructor(props) {

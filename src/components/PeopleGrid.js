@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import '../App.css';
-
 import $ from "jquery";
 
-import MovieTile from './MovieTile';
+import PersonTile from './PersonTile'
 
-class MovieGrid extends Component {
+class PeopleGrid extends Component {
     constructor(props) {
         super(props);
 
@@ -30,18 +29,15 @@ class MovieGrid extends Component {
 
     render() {
         return (
-            <div>
-                <div className="photo-grid">
-                    {this.props.movies.map((item, index) =>
-                        <div key={index}>
-                            <MovieTile props={item} />
-                        </div>
-                    )}
-                </div>
+            <div className="review-grid">
+                {this.props.people.map((item, index) =>
+                    <div key={index}>
+                        <PersonTile people={item} />
+                    </div>
+                )}
             </div>
         );
     }
 }
 
-
-export default MovieGrid;
+export default PeopleGrid

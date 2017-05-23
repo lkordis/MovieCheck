@@ -40,7 +40,7 @@
 
 .review-tile {
   background-color: #564e4e;
-  margin: auto;
+  margin-top: 10px;
   position: relative;
   box-shadow: 10px 10px 5px black;
 }
@@ -87,10 +87,6 @@ html {
   margin-top: -10%;
   margin-bottom: 10%; 
   font-size: 1.35em;
-}
-
-.navbar {
-  background-color: whitesmoke
 }
 
 

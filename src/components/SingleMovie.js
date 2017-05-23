@@ -73,7 +73,6 @@ class SingleMovie extends Component {
     render() {
         //let mini = `${IMAGE_PATH}w45/${this.state.movie.backdrop_path}`;
         let originalBackdrop = `${IMAGE_PATH}original${this.state.movie.backdrop_path}`;
-        console.log(originalBackdrop)
         let addToSeenBtn = null;
         let addToWatchBtn = null;
         let addReviewBtn = null;

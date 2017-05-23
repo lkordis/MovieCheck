@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, FormControl, FormGroup } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RAILS_API_BASE_LOGIN } from '../constants'
 
+import Search from './Search'
 import Login from './Login';
 import Register from './Register';
 
@@ -30,7 +31,6 @@ class NavbarInstance extends Component {
     this.onUserChange = this.onUserChange.bind(this)
     this.logout = this.logout.bind(this)
     this.isLoggedIn = this.isLoggedIn.bind(this)
-    this.onSearchChange = this.onSearchChange.bind(this)
   }
 
   toggleModalLogin = () => {
@@ -86,13 +86,6 @@ class NavbarInstance extends Component {
     this.isLoggedIn();
   }
 
-  onSearchChange(event) {
-    this.setState({ search_term: event.target.value })
-    var custom = new CustomEvent('search', { 'detail': event.target.value });
-    dispatchEvent(custom)
-    // if (window.location.pathname.split('/').pop() !== '') window.location.replace('/')
-  }
-
   render() {
     let logAction = null;
     let register = null;
@@ -112,15 +105,12 @@ class NavbarInstance extends Component {
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to="/">Završni rad</Link>
+            <Link to="/" onClick={sessionStorage.clear()}>Završni rad</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Form pullLeft>
-          <FormGroup>
-            <FormControl type="text" placeholder="Search" onChange={this.onSearchChange}/>
-          </FormGroup>
-          {' '}
+          <Search />
         </Navbar.Form>
         <Navbar.Collapse>
           <Nav pullRight>

@@ -19,9 +19,9 @@ class DiscoverApiData {
     fetchData(callback) {
         if (localStorage.getItem("Authorization") != null) {
             fetch(`${RAIL_BASE}`, { headers: myHeaders })
-                .then(rails_response => { 
-                    if(rails_response.statusText === 'Unauthorized') return [];
-                    return rails_response.json() 
+                .then(rails_response => {
+                    if (rails_response.statusText === 'Unauthorized') return [];
+                    return rails_response.json()
                 })
                 .then(user_movies => {
                     fetch(`${DISCOVER_ROUTE}${this.page}`)
@@ -44,6 +44,8 @@ class DiscoverApiData {
     }
 
     getInitialApiData(callback) {
+        this.page = 1;
+
         this.fetchData(callback);
         this.fetchData(callback);
     }

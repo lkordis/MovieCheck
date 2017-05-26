@@ -22,9 +22,13 @@ class PersonTile extends Component {
                             <div className="col-xs-10">
                                 <h2>{this.props.people.name} {this.props.people.lastName}</h2>
                                 <h3>Known for:</h3>
-                                {this.props.people.known_for.map((item, index) =>
-                                    <Link to={`/movie/${item.id}`} key={index}>{item.original_title}, </Link>
-                                )}
+                                {this.props.people.known_for.map((item, index) => {
+                                    if (item.original_title) {
+                                        return <Link to={`/movie/${item.id}`} key={index}>{item.original_title}, </Link>
+                                    } else {
+                                        return <Link to={`/movie/${item.id}`} key={index}>{item.title}, </Link>
+                                    }
+                                })}
                             </div>
                         </div>
                     </div>

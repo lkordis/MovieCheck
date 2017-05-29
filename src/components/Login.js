@@ -29,7 +29,7 @@ class Login extends Component {
     changeProps(result) {
         this.props.onUserChange({
             name: result.name,
-            lastName: result.lastName,
+            last_name: result.last_name,
             email: result.email,
             id: result.id
         })

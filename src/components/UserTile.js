@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import '../App.css';
 import { RAILS_API } from '../constants'
+import { Link } from 'react-router-dom';
 
 import $ from 'jquery';
 window.jQuery = $;
@@ -37,17 +38,17 @@ class UserTile extends Component {
                 style={{
                     width: 75 + 'px',
                     height: 75 + 'px'
-                }} circle responsive/>
+                }} circle responsive />
         }
 
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-xs-4">
+                    <div className="col-xs-4 col-lg-4">
                         {image}
                     </div>
-                    <div className="col-xs-8">
-                        <p>{this.state.user.name}{this.state.user.lastName}</p>
+                    <div className="col-xs-8 col-lg-8">
+                        <Link to={`/users/${this.state.user.id}`}><p>{this.state.user.name} {this.state.user.last_name}</p></Link>
                         <Button onClick={this.followUser}>Follow</Button>
                     </div>
                 </div>

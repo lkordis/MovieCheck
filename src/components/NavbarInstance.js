@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RAILS_API_BASE_LOGIN } from '../constants'
 
@@ -19,7 +19,7 @@ class NavbarInstance extends Component {
       user: {
         email: "",
         name: "",
-        lastName: "",
+        last_name: "",
         id: ""
       },
       logged_in: false,
@@ -31,6 +31,7 @@ class NavbarInstance extends Component {
     this.onUserChange = this.onUserChange.bind(this)
     this.logout = this.logout.bind(this)
     this.isLoggedIn = this.isLoggedIn.bind(this)
+    this.onUsersSearch = this.onUsersSearch.bind(this)
   }
 
   toggleModalLogin = () => {
@@ -73,13 +74,17 @@ class NavbarInstance extends Component {
       user: {
         name: user.name,
         email: user.email,
-        lastName: user.lastName,
+        last_name: user.last_name,
         id: user.id
       },
       logged_in: true
     })
 
     this.props.onUserChange();
+  }
+
+  onUsersSearch() {
+    location.replace('/search/users');
   }
 
   componentWillMount() {
@@ -96,8 +101,8 @@ class NavbarInstance extends Component {
       logAction = <NavItem onClick={this.toggleModalLogin} >Login</NavItem>
       register = <NavItem onClick={this.toggleModalRegister}>Register</NavItem>
     } else {
-      logAction = <NavItem onClick={this.logout}>Odjava</NavItem>
-      currentUser = <NavItem ><Link to={`/users/${this.state.user.id}`}>{this.state.user.name} {this.state.user.lastName}</Link></NavItem >
+      logAction = <MenuItem onClick={this.logout}>Log out</MenuItem>
+      currentUser = <NavItem ><Link to={`/users/${this.state.user.id}`}>{this.state.user.name} {this.state.user.last_name}</Link></NavItem >
       reviews = <NavItem ><Link to={'/reviews'}>Reviews</Link></NavItem>
     }
 
@@ -117,9 +122,14 @@ class NavbarInstance extends Component {
             <Login show={this.state.isOpenLogin} onClose={this.toggleModalLogin} onUserChange={this.onUserChange} />
             <Register show={this.state.isOpenRegister} onClose={this.toggleModalRegister} onUserChange={this.onUserChange} />
             {currentUser}
-            {logAction}
             {register}
             {reviews}
+            <NavDropdown title="Actions" id="basic-nav-dropdown">
+              <MenuItem >Update profile</MenuItem>
+              <MenuItem onClick={this.onUsersSearch}> Search users</MenuItem>
+              <MenuItem divider />
+              {logAction}
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

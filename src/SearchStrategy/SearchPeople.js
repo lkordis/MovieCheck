@@ -29,7 +29,6 @@ class SearchPeople {
     searchImages(id) {
         return new Promise((resolve, reject) => {
             tmdb.personImages({ id: id }, (err, result) => {
-                console.log(result)
                 resolve(result)
             })
         })

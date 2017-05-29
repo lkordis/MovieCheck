@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import '../App.css';
 
 import $ from "jquery";
@@ -41,6 +42,10 @@ class MovieGrid extends Component {
             </div>
         );
     }
+}
+
+MovieGrid.proptypes = {
+    movies: PropTypes.array
 }
 
 

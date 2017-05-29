@@ -9,6 +9,33 @@ export const RAILS_API_USERS = "https://peaceful-reef-40428.herokuapp.com/users.
 
 export const CLOUDINARY_UPLOAD = 'https://api.cloudinary.com/v1_1/lkordis/image/upload'
 
+export const SORT_BY = [
+    {
+        id: 'popularity.asc',
+        title: 'Popularity, ascending'
+    },
+    {
+        id: 'popularity.desc',
+        title: 'Popularity, descending'
+    },
+    {
+        id: 'revenue.asc',
+        title: 'Revenue, ascending'
+    },
+    {
+        id: 'revenue.desc',
+        title: 'Revenue, descending'
+    },
+    {
+        id: 'original_title.asc',
+        title: 'Original title, ascending'
+    },
+    {
+        id: 'original_title.desc',
+        title: 'Original title, descending'
+    }
+]
+
 export const MOVIE_GENRES = [
     {
         "id": 28,

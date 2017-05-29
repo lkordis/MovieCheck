@@ -38,7 +38,8 @@ class SearchMovie {
                 page: this.page,
                 'primary_release_date.gte': options.lowerYear,
                 'primary_release_date.lte': options.higherYear,
-                with_genres: options.genreId
+                with_genres: options.genreId,
+                sort_by: options.sort_by
             }, (err, result) => {
                 if (err) reject(err)
 

@@ -14,7 +14,7 @@ class Register extends Component {
             email: "",
             password: "",
             name: "",
-            lastName: "",
+            last_name: "",
             user_image: '',
             original_fileName: ''
         }
@@ -69,13 +69,13 @@ class Register extends Component {
     }
 
     onLastNameChange(event) {
-        this.setState({ lastName: event.target.value });
+        this.setState({ last_name: event.target.value });
     }
 
     changeProps(result) {
         this.props.onUserChange({
             name: result.name,
-            lastName: result.lastName,
+            last_name: result.last_name,
             email: result.email,
             id: result.id
         })
@@ -90,7 +90,7 @@ class Register extends Component {
             email: "",
             password: "",
             name: "",
-            lastName: "",
+            last_name: "",
             user_image: ''
         })
 
@@ -98,8 +98,8 @@ class Register extends Component {
     }
 
     onSubmit(event) {
-        const { email, password, name, lastName, user_image } = this.state;
-        let login_API = `${RAILS_API_USERS}?email=${email}&password=${password}&name=${name}&lastName=${lastName}&user_image=${user_image}`
+        const { email, password, name, last_name, user_image } = this.state;
+        let login_API = `${RAILS_API_USERS}?email=${email}&password=${password}&name=${name}&lastName=${last_name}&user_image=${user_image}`
 
         var myInit = {
             method: 'POST'

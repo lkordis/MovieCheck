@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { Button } from 'react-bootstrap';
+import { Button, Tabs, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { TMDB_API_KEY } from '../config'
 import { TMDB_BASE_MOVIE, IMAGE_PATH, RAILS_API } from '../constants'
@@ -14,7 +14,10 @@ class SingleMovie extends Component {
 
         this.state = {
             movie: [],
-            credits: []
+            credits: [],
+            crew: [],
+            seen: false,
+            wished: false
         }
 
         this.getApiData = this.getApiData.bind(this);
@@ -23,6 +26,9 @@ class SingleMovie extends Component {
         this.setCredits = this.setCredits.bind(this);
         this.addToSeen = this.addToSeen.bind(this);
         this.addToWatch = this.addToWatch.bind(this);
+        this.checkIfSeen = this.checkIfSeen.bind(this);
+        this.checkIfWished = this.checkIfWished.bind(this);
+        this.deleteFromSeen = this.deleteFromSeen.bind(this);
     }
 
     getCredits() {
@@ -30,7 +36,7 @@ class SingleMovie extends Component {
 
         fetch(`${CREDITS}`)
             .then(response => response.json())
-            .then(result => this.setCredits(result.cast))
+            .then(result => this.setCredits(result))
     }
 
     getApiData() {
@@ -39,6 +45,32 @@ class SingleMovie extends Component {
             .then(result => {
                 this.setMovie(result)
                 this.getCredits();
+                this.checkIfSeen(result.id)
+                this.checkIfWished(result.id)
+            });
+    }
+
+    checkIfSeen(id) {
+        fetch(`${RAILS_API}seen_movies.json?`, { headers: myHeaders })
+            .then(response => response.json())
+            .then(result => {
+                result.forEach(element => {
+                    if (element.id === id) {
+                        this.setState({ seen: true })
+                    }
+                });
+            });
+    }
+
+    checkIfWished(id) {
+        fetch(`${RAILS_API}wished_movies.json?`, { headers: myHeaders })
+            .then(response => response.json())
+            .then(result => {
+                result.forEach(element => {
+                    if (element.id === id) {
+                        this.setState({ wished: true })
+                    }
+                });
             });
     }
 
@@ -47,6 +79,15 @@ class SingleMovie extends Component {
         let route = `${RAILS_API}seen_movies.json?title=${movie.original_title}&id=${movie.id}&poster_path=${movie.poster_path}`
         fetch(`${route}`, { method: 'POST', headers: myHeaders })
             .then()
+    }
+
+    deleteFromSeen() {
+        const { movie } = this.state;
+        let route = `${RAILS_API}seen_movies.json?id=${movie.id}`
+        fetch(`${route}`, { method: 'DELETE', headers: myHeaders })
+            .then((r) => {
+                location.reload();
+            })
     }
 
     addToWatch() {
@@ -63,7 +104,7 @@ class SingleMovie extends Component {
     }
 
     setCredits(result) {
-        this.setState({ credits: result })
+        this.setState({ credits: result.cast, crew: result.crew })
     }
 
     componentWillMount() {
@@ -78,9 +119,16 @@ class SingleMovie extends Component {
         let addReviewBtn = null;
 
         if (localStorage.getItem("Authorization")) {
-            addToSeenBtn = <Button onClick={this.addToSeen}>Add to seen list</Button>
-            addToWatchBtn = <Button onClick={this.addToWatch}>Add to watch list</Button>
-            addReviewBtn = <Link to={`/new_review/${this.state.movie.id}`}><Button onClick={this.addReview}>Add a review</Button></Link>
+            if (!this.state.seen) {
+                addToSeenBtn = <Button onClick={this.addToSeen}>Add to seen list</Button>
+            }
+            if (!this.state.wished) {
+                addToWatchBtn = <Button onClick={this.addToWatch}>Add to watch list</Button>
+            }
+            if (this.state.seen) {
+                addToSeenBtn = <Button onClick={this.deleteFromSeen}>Remove from seen list</Button>
+                addReviewBtn = <Link to={`/new_review/${this.state.movie.id}`}><Button onClick={this.addReview}>Add a review</Button></Link>
+            }
         }
 
         return (
@@ -98,14 +146,32 @@ class SingleMovie extends Component {
                         {addReviewBtn}
 
                     </div>
-                    <h3>Credits</h3><br />
-                    <div>
-                        {this.state.credits.map((item, index) =>
-                            <div key={index}>
-                                <p>{item.name}: {item.character}</p>
+                    <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
+                        <Tab eventKey={1} title="Credits">
+                            <div>
+                                <h3>Credits</h3><br />
+                                <div>
+                                    {this.state.credits.map((item, index) =>
+                                        <div key={index}>
+                                            <p><Link to={`/people/${item.id}`}>{item.name}</Link>: {item.character}</p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        )}
-                    </div>
+                        </Tab>
+                        <Tab eventKey={2} title="Crew">
+                            <div>
+                                <h3>Crew</h3><br />
+                                <div>
+                                    {this.state.crew.map((item, index) =>
+                                        <div key={index}>
+                                            <p>{item.job}: <Link to={`/people/${item.id}`}>{item.name}</Link></p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </Tab>
+                    </Tabs>
                 </div>
             </div>
         )

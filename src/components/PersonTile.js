@@ -16,11 +16,11 @@ class PersonTile extends Component {
                 <div className="review-tile">
                     <div className="container-fluid">
                         <div className="row">
-                            <div className="col-xs-2">
+                            <div className="col-lg-2">
                                 <img src={`${IMAGE_PATH_W154}${this.props.people.profile_path}`} alt={this.props.people.profile_path} className="img-responsive" />
                             </div>
                             <div className="col-xs-10">
-                                <h2>{this.props.people.name} {this.props.people.lastName}</h2>
+                                <Link to={`/people/${this.props.people.id}`}><h2>{this.props.people.name} {this.props.people.lastName}</h2></Link>
                                 <h3>Known for:</h3>
                                 {this.props.people.known_for.map((item, index) => {
                                     if (item.original_title) {

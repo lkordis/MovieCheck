@@ -21,14 +21,13 @@ class Comment extends Component {
     }
 
     render() {
+        var date = new Date(Date.parse(this.state.comment.updated_at)).toDateString()
         return (
-            <figure className="grid-figure">
                 <div className="review-tile">
-                    <h3>{this.state.user.name}{this.state.user.lastName}  </h3>
-                    <h3>{this.state.comment.updated_at}</h3><br />
+                    <h3>{this.state.user.name} {this.state.user.last_name}  </h3>
+                    <h3>{date}</h3><br />
                     <h4>{this.state.comment.text}</h4>
                 </div>
-            </figure>
         )
     }
 }

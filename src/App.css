@@ -45,6 +45,14 @@
   box-shadow: 10px 10px 5px black;
 }
 
+.people-grid {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  max-width: 65%;
+  margin: auto;
+}
+
 html { 
   background-color: #222;
   -webkit-background-size: cover;

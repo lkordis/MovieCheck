@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import '../App.css';
 import $ from "jquery";
 
@@ -29,7 +30,7 @@ class PeopleGrid extends Component {
 
     render() {
         return (
-            <div className="review-grid">
+            <div className="people-grid">
                 {this.props.people.map((item, index) =>
                     <div key={index}>
                         <PersonTile people={item} />
@@ -38,6 +39,10 @@ class PeopleGrid extends Component {
             </div>
         );
     }
+}
+
+PeopleGrid.proptypes = {
+    people: PropTypes.array
 }
 
 export default PeopleGrid

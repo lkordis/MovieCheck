@@ -16,7 +16,7 @@ class UserMoviesGridWrapper extends Component {
             searching: false,
         }
 
-        this.user_movies_api = new UserApiData(`${RAILS_API}${this.props.type}`)
+        this.user_movies_api = new UserApiData(`${RAILS_API}show/${this.props.type}?id=${this.props.id}`)
         this.search = new SearchUserMovie(this.props.type)
         this.setMovies = this.setMovies.bind(this)
     }
@@ -32,7 +32,7 @@ class UserMoviesGridWrapper extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener('Movies_user', (e) => {
+        window.addEventListener('search_user', (e) => {
             if (e.detail === '') {
                 this.setState({ searching: false, movies: [] })
                 this.user_movies_api.getInitialApiData(this.setMovies);
@@ -51,7 +51,7 @@ class UserMoviesGridWrapper extends Component {
     render() {
         return (
             <div>
-                <h2>{this.props.text}</h2>
+                <h3>{this.props.text}</h3>
                 <MovieGrid movies={this.state.movies} />
             </div>
         )

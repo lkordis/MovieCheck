@@ -34,31 +34,35 @@ class SinglePerson extends Component {
         var movies = null;
         if (this.state.credits.cast) movies = <MovieGrid movies={this.state.credits.cast} />
         return (
-            <div style={{
-                display: 'flex',
-                maxWidth: '65%',
-                backgroundColor: '#2b2929',
-                position: 'relative',
-                margin: 'auto'
-            }}>
-                <div style={{ color: 'white', position: 'relative', margin: 'auto' }}>
-                    <Grid>
-                        <Row className="show-grid">
-                            <Col xs={12} md={8} lg={3}>
-                                <Image src={`${IMAGE_PATH_W154}${this.state.person.profile_path}`} alt={this.state.person.profile_path} className="img-responsive" />
-                            </Col>
-                            <Col xs={6} md={4} lg={9}>
-                                <h2 style={{ fontFamily: 'Monospace' }}>{this.state.person.name}</h2><br />
-                                <p style={{ position: 'relative' }}>{this.state.person.biography}</p>
-                            </Col>
-                        </Row>
-                    </Grid>
-                    <div>
-                        <h3 style={{ fontFamily: 'Monospace' }}> Movies </h3>
-                        {movies}
-                    </div>
-                </div>
-            </div>
+            <Grid>
+                <Row className="show-grid">
+                    <Col xs={12} md={12} lg={12}>
+                        <div style={{
+                            display: 'flex',
+                            backgroundColor: '#2b2929',
+                            position: 'relative',
+                        }}>
+                            <div style={{ color: 'white', position: 'relative', margin: 'auto' }}>
+
+                                <Row className="show-grid">
+                                    <Col xs={12} md={3} lg={3}>
+                                        <Image src={`${IMAGE_PATH_W154}${this.state.person.profile_path}`} alt={this.state.person.profile_path} className="img-responsive" />
+                                    </Col>
+                                    <Col xs={12} md={9} lg={9}>
+                                        <h2 style={{ fontFamily: 'Monospace' }}>{this.state.person.name}</h2><br />
+                                        <p style={{ position: 'relative' }}>{this.state.person.biography}</p>
+                                    </Col>
+                                </Row>
+
+                                <div>
+                                    <h3 style={{ fontFamily: 'Monospace' }}> Movies </h3>
+                                    {movies}
+                                </div>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Grid>
         )
     }
 }

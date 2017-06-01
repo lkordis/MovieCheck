@@ -69,11 +69,11 @@ class SingleReview extends Component {
             comments =
                 <div style={{
                     display: 'flex',
-                    maxWidth: '65%',
-                    backgroundColor: '#2b2929',
                     position: 'relative',
                     margin: 'auto',
-                    flexDirection: 'column'
+                    maxWidth: '45%',
+                    flexDirection: 'column',
+                    color: 'white'
                 }}>
                     <h3>Comments</h3> <br />
                     <div>
@@ -87,36 +87,38 @@ class SingleReview extends Component {
         }
 
         return (
-            <div style={{
-                display: 'flex',
-                maxWidth: '65%',
-                backgroundColor: '#2b2929',
-                position: 'relative',
-                margin: 'auto'
-            }}>
-                <div style={{ color: 'white', position: 'relative', margin: 'auto' }}>
-                    <Grid>
-                        <Row className="show-grid">
-                            <Col xs={12} md={8} lg={3}>
-                                <Image src={`${originalBackdrop}`} alt={originalBackdrop} className="img-responsive" />
-                                <div >
-                                    {addCommentButton}
-                                    {editButton}
-                                    {commentArea}
-                                </div>
-                            </Col>
-                            <Col xs={6} md={4} lg={9}>
-                                <h2 style={{ fontFamily: 'Monospace' }}>Review by {this.state.user.name} {this.state.user.last_name}</h2>
-                                <br />
-                                <p style={{ position: 'relative' }}>{this.state.review.text}</p>
-                            </Col>
-                        </Row>
-                    </Grid>
-                    <div>
-                        {comments}
-                    </div>
-                </div>
-            </div>
+            <Grid>
+                <Row className="show-grid">
+                    <Col xs={12} md={12} lg={12}>
+                        <div style={{
+                            display: 'flex',
+                            backgroundColor: '#2b2929',
+                            position: 'relative',
+                        }}>
+                            <div style={{ color: 'white', position: 'relative', margin: 'auto' }}>
+                                <Row className="show-grid">
+                                    <Col xs={12} md={6} lg={3}>
+                                        <Image src={`${originalBackdrop}`} alt={originalBackdrop} className="img-responsive" />
+                                        <div style={{margin: '10px, 10px, 10px, 10px'}}>
+                                            {editButton}
+                                            {addCommentButton}
+                                            {commentArea}
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={4} lg={9}>
+                                        <h2 style={{ fontFamily: 'Monospace' }}>Review by {this.state.user.name} {this.state.user.last_name}</h2>
+                                        <br />
+                                        <p style={{ position: 'right' }}>{this.state.review.text}</p>
+                                    </Col>
+                                </Row>
+                            </div>
+                        </div>
+                        <div>
+                            {comments}
+                        </div>
+                    </Col>
+                </Row >
+            </Grid >
         )
     }
 }

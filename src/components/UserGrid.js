@@ -39,7 +39,7 @@ class UserGrid extends Component {
                 slidesToScroll: 4
             };
             slider =
-                <div>
+                <div style={{color: 'white'}}>
                     <h2>Recommended users</h2><br />
                     <Slider {...settings}>
                         {this.state.users.map((item, index) =>

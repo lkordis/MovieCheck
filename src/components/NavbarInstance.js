@@ -32,6 +32,7 @@ class NavbarInstance extends Component {
     this.logout = this.logout.bind(this)
     this.isLoggedIn = this.isLoggedIn.bind(this)
     this.onUsersSearch = this.onUsersSearch.bind(this)
+    this.onReviews = this.onReviews.bind(this)
   }
 
   toggleModalLogin = () => {
@@ -87,6 +88,10 @@ class NavbarInstance extends Component {
     location.replace('/search/users');
   }
 
+  onReviews() {
+    location.replace(`/user/${this.state.user.id}/reviews`)
+  }
+
   componentWillMount() {
     this.isLoggedIn();
   }
@@ -96,14 +101,29 @@ class NavbarInstance extends Component {
     let register = null;
     let currentUser = null;
     let reviews = null;
+    let navDropdown = null;
 
     if (!this.state.logged_in) {
       logAction = <NavItem onClick={this.toggleModalLogin} >Login</NavItem>
       register = <NavItem onClick={this.toggleModalRegister}>Register</NavItem>
+      navDropdown =
+        <NavDropdown title="Actions" id="basic-nav-dropdown">
+          {logAction}
+        </NavDropdown>
     } else {
       logAction = <MenuItem onClick={this.logout}>Log out</MenuItem>
       currentUser = <NavItem ><Link to={`/users/${this.state.user.id}`}>{this.state.user.name} {this.state.user.last_name}</Link></NavItem >
       reviews = <NavItem ><Link to={'/reviews'}>Reviews</Link></NavItem>
+      navDropdown =
+        <NavDropdown title="Actions" id="basic-nav-dropdown">
+          <MenuItem >Update profile</MenuItem>
+          <MenuItem onClick={this.onUsersSearch}> Search users</MenuItem>
+          <MenuItem onClick={this.onReviews}> My reviews </MenuItem>
+          <MenuItem> Following </MenuItem>
+          <MenuItem> Followers </MenuItem>
+          <MenuItem divider />
+          {logAction}
+        </NavDropdown>
     }
 
     return (
@@ -124,12 +144,7 @@ class NavbarInstance extends Component {
             {currentUser}
             {register}
             {reviews}
-            <NavDropdown title="Actions" id="basic-nav-dropdown">
-              <MenuItem >Update profile</MenuItem>
-              <MenuItem onClick={this.onUsersSearch}> Search users</MenuItem>
-              <MenuItem divider />
-              {logAction}
-            </NavDropdown>
+            {navDropdown}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

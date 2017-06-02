@@ -3,7 +3,7 @@ import '../App.css';
 import { Button, Tabs, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { TMDB_API_KEY } from '../config'
-import { TMDB_BASE_MOVIE, IMAGE_PATH, RAILS_API } from '../constants'
+import { TMDB_BASE_MOVIE, IMAGE_PATH, RAILS_API, RAILS_API_BASE_LOGIN } from '../constants'
 
 var myHeaders = new Headers()
 myHeaders.append("Authorization", localStorage.getItem("Authorization"));
@@ -17,7 +17,8 @@ class SingleMovie extends Component {
             credits: [],
             crew: [],
             seen: false,
-            wished: false
+            wished: false,
+            logged_in: false,
         }
 
         this.getApiData = this.getApiData.bind(this);
@@ -29,6 +30,7 @@ class SingleMovie extends Component {
         this.checkIfSeen = this.checkIfSeen.bind(this);
         this.checkIfWished = this.checkIfWished.bind(this);
         this.deleteFromSeen = this.deleteFromSeen.bind(this);
+        this.login = this.login.bind(this);
     }
 
     getCredits() {
@@ -39,14 +41,32 @@ class SingleMovie extends Component {
             .then(result => this.setCredits(result))
     }
 
+    login(id) {
+        let login_API = `${RAILS_API_BASE_LOGIN}?`
+
+        var myHeaders = new Headers()
+        myHeaders.append("Authorization", localStorage.getItem("Authorization"))
+
+        fetch(`${login_API}`, { headers: myHeaders })
+            .then(response => {
+                return response.json()
+            })
+            .then(result => {
+                if (!result.error) {
+                    this.setState({ logged_in: true })
+                    this.checkIfSeen(id)
+                    this.checkIfWished(id)
+                }
+            })
+    }
+
     getApiData() {
         fetch(`${TMDB_BASE_MOVIE}${this.props.match.params.movieId}?language=en-US&api_key=${TMDB_API_KEY}`)
             .then(response => response.json())
             .then(result => {
                 this.setMovie(result)
                 this.getCredits();
-                this.checkIfSeen(result.id)
-                this.checkIfWished(result.id)
+                this.login(result.id)
             });
     }
 
@@ -108,7 +128,7 @@ class SingleMovie extends Component {
     }
 
     componentWillMount() {
-        this.getApiData();
+        this.getApiData()
     }
 
     render() {
@@ -118,7 +138,7 @@ class SingleMovie extends Component {
         let addToWatchBtn = null;
         let addReviewBtn = null;
 
-        if (localStorage.getItem("Authorization")) {
+        if (this.state.logged_in) {
             if (!this.state.seen) {
                 addToSeenBtn = <Button onClick={this.addToSeen}>Add to seen list</Button>
             }

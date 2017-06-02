@@ -49,6 +49,8 @@ class App extends Component {
           <Route exact={true} path="/reviews/:reviewId" component={SingleReview} />
           <Route exact={true} path="/people/:personId" component={SinglePerson} />
           <Route exact={true} path="/search/users" component={UsersSearchGrid} />
+          <Route exact={true} path="/user/:userId/reviews" component={ReviewGridWrapper} />
+          <Route exact={true} path="/update" component={Register} />
         </div>
       </BrowserRouter>
     );

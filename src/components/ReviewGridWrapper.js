@@ -9,7 +9,7 @@ class ReviewGridWrapper extends Component {
 
         var api = new UserApiData(`${BASE}reviews.json?`);
         return (
-            <ReviewGrid props={api} getApiData={api.getApiData} getInitialApiData={api.getInitialApiData} />
+            <ReviewGrid props={api} getApiData={api.getApiData} getInitialApiData={api.getInitialApiData} id={this.props.match.params.userId}/>
         )
     }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { RAILS_API } from '../constants'
+import { Link } from 'react-router-dom';
 
 import PeopleGrid from '../components/PeopleGrid'
 import UserMoviesGridWrapper from './UserMoviesGridWrapper'
@@ -57,7 +58,7 @@ class UserProfile extends Component {
 
     render() {
         var movies =
-            <div className="col-lg-6">
+            <div className="col-lg-12">
                 <UserMoviesGridWrapper type={`seen_movies.json`} id={`${this.props.match.params.userId}`} text="Seen movies" />
                 <UserMoviesGridWrapper type={`wished_movies.json`} id={`${this.props.match.params.userId}`} text="Wished movies" />
             </div>;
@@ -68,10 +69,17 @@ class UserProfile extends Component {
                     <h3>People</h3>
                     <PeopleGrid people={this.state.people} />
                 </div>)
+
+            var movies =
+                <div className="col-lg-6">
+                    <UserMoviesGridWrapper type={`seen_movies.json`} id={`${this.props.match.params.userId}`} text="Seen movies" />
+                    <UserMoviesGridWrapper type={`wished_movies.json`} id={`${this.props.match.params.userId}`} text="Wished movies" />
+                </div>;
         }
         return (
             <div className="container-fluid" style={{ color: 'white', fontFamily: 'Monospace' }}>
                 <h2>{this.state.user.name}  {this.state.user.last_name}</h2>
+                <Link to={`/user/${this.state.user.id}/reviews`}>{this.state.user.name}'s reviews</Link>
                 <div className="row">
                     {people}
                     {movies}

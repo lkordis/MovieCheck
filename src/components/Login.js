@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { Button, Modal } from 'react-bootstrap';
-import {RAILS_API_BASE_LOGIN} from '../constants'
+import { RAILS_API_BASE_LOGIN } from '../constants'
 
 class Login extends Component {
     constructor(props) {
@@ -43,7 +43,7 @@ class Login extends Component {
         var myHeaders = new Headers()
         myHeaders.append("Authorization", localStorage.getItem("Authorization"))
 
-        fetch(`${login_API}`, {headers: myHeaders})
+        fetch(`${login_API}`, { headers: myHeaders })
             .then(response => {
                 return response.json()
             })

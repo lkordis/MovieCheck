@@ -19,14 +19,7 @@ class ReviewGrid extends Component {
     }
 
     setReviews(data) {
-        if (this.props.id) {
-            var newData = data.filter(value => {
-                return value.user_id == this.props.id
-            })
-            this.setState({ reviews: this.state.reviews.concat(newData) })
-        } else {
-            this.setState({ reviews: this.state.reviews.concat(data) })
-        }
+        this.setState({ reviews: this.state.reviews.concat(data) })
     }
 
     render() {

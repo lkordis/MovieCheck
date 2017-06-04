@@ -11,6 +11,8 @@ import NewReview from './components/NewReview';
 import SingleReview from './components/SingleReview';
 import SinglePerson from './components/SinglePerson';
 import UsersSearchGrid from './components/UsersSearchGrid'
+import FriendshipsGrid from './components/FriendshipsGrid'
+import UpdateProfile from './components/UpdateProfile'
 
 import MovieGridWrapper from './components/MovieGridWrapper';
 import ReviewGridWrapper from './components/ReviewGridWrapper';
@@ -50,7 +52,9 @@ class App extends Component {
           <Route exact={true} path="/people/:personId" component={SinglePerson} />
           <Route exact={true} path="/search/users" component={UsersSearchGrid} />
           <Route exact={true} path="/user/:userId/reviews" component={ReviewGridWrapper} />
-          <Route exact={true} path="/update" component={Register} />
+          <Route exact={true} path="/update" component={UpdateProfile} />
+          <Route exact={true} path="/follwers" component={FriendshipsGrid} />
+          <Route exact={true} path="/following" component={FriendshipsGrid} />
         </div>
       </BrowserRouter>
     );

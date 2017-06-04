@@ -43,8 +43,12 @@ class MovieGridWrapper extends Component {
     }
 
     setMovies(results) {
+        var filtered = results.filter((value) => {
+            return value.poster_path !== null
+        })
+        console.log(filtered)
         this.setState({
-            movies: this.state.movies.concat(results)
+            movies: this.state.movies.concat(filtered)
         });
     }
 
@@ -153,7 +157,7 @@ class MovieGridWrapper extends Component {
             limiter.removeTokens(1, () => {
                 this.setState({ movies: [], people: [] })
                 search.search(query).then((results) => {
-                    this.setState({ movies: results })
+                    this.setMovies(results)
                     search_people.search(query).then((people) => {
                         this.setState({ people })
                     })
@@ -192,7 +196,7 @@ class MovieGridWrapper extends Component {
     render() {
         let grid =
             <div>
-                <FilterMovies changeGenre={this.changeGenre} changeYear={this.changeYear} changeSortBy={this.changeSortBy}/>
+                <FilterMovies changeGenre={this.changeGenre} changeYear={this.changeYear} changeSortBy={this.changeSortBy} />
                 <MovieGrid movies={this.state.movies} />
             </div>
 

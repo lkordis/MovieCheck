@@ -33,6 +33,9 @@ class NavbarInstance extends Component {
     this.isLoggedIn = this.isLoggedIn.bind(this)
     this.onUsersSearch = this.onUsersSearch.bind(this)
     this.onReviews = this.onReviews.bind(this)
+    this.onFollowers = this.onFollowers.bind(this)
+    this.onFollowing = this.onFollowing.bind(this)
+    this.onUpdateProfile = this.onUpdateProfile.bind(this)
   }
 
   toggleModalLogin = () => {
@@ -92,6 +95,18 @@ class NavbarInstance extends Component {
     location.replace(`/user/${this.state.user.id}/reviews`)
   }
 
+  onFollowing() {
+    location.replace(`/following`)
+  }
+
+  onFollowers() {
+    location.replace(`/followers`)
+  }
+
+  onUpdateProfile() {
+    location.replace(`/update`)
+  }
+
   componentWillMount() {
     this.isLoggedIn();
   }
@@ -116,11 +131,11 @@ class NavbarInstance extends Component {
       reviews = <NavItem ><Link to={'/reviews'}>Reviews</Link></NavItem>
       navDropdown =
         <NavDropdown title="Actions" id="basic-nav-dropdown">
-          <MenuItem >Update profile</MenuItem>
+          <MenuItem onClick={this.onUpdateProfile}>Update profile</MenuItem>
           <MenuItem onClick={this.onUsersSearch}> Search users</MenuItem>
           <MenuItem onClick={this.onReviews}> My reviews </MenuItem>
-          <MenuItem> Following </MenuItem>
-          <MenuItem> Followers </MenuItem>
+          <MenuItem onClick={this.onFollowing}> Following </MenuItem>
+          <MenuItem onClick={this.onFollowers}> Followers </MenuItem>
           <MenuItem divider />
           {logAction}
         </NavDropdown>

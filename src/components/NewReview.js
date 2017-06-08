@@ -16,6 +16,7 @@ class NewReview extends Component {
 
         this.state = {
             text: "",
+            title: '',
             movie_poster_path: '',
             editing: this.props.editing
         }
@@ -39,7 +40,7 @@ class NewReview extends Component {
         fetch(`${TMDB_BASE_MOVIE}${this.props.match.params.movieId}?language=en-US&api_key=${TMDB_API_KEY}`)
             .then(response => response.json())
             .then(result => {
-                this.setState({ movie_poster_path: `${IMAGE_PATH_W154}${result.poster_path}` })
+                this.setState({ movie_poster_path: `${IMAGE_PATH_W154}${result.poster_path}`, title: result.original_title })
                 console.log(this.state.movie_poster_path)
             });
     }
@@ -84,7 +85,7 @@ class NewReview extends Component {
     render() {
         var form =
             <div>
-                <h3 style={{ color: 'white' }}>New review</h3>
+                <h3 style={{ color: 'white' }}>New review for: {this.state.title}</h3>
                     <textarea rows="80" cols="100" onChange={this.onTextChange} value={this.state.text}>
                     </textarea><br />
                     <Button type="submit" onClick={this.onSubmit}>Submit</Button>

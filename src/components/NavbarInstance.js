@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Modal, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RAILS_API_BASE_LOGIN } from '../constants'
 
@@ -16,6 +16,7 @@ class NavbarInstance extends Component {
     this.state = {
       isOpenLogin: false,
       isOpenRegister: false,
+      isOpenAbout: false,
       user: {
         email: "",
         name: "",
@@ -36,6 +37,7 @@ class NavbarInstance extends Component {
     this.onFollowers = this.onFollowers.bind(this)
     this.onFollowing = this.onFollowing.bind(this)
     this.onUpdateProfile = this.onUpdateProfile.bind(this)
+    this.about = this.about.bind(this)
   }
 
   toggleModalLogin = () => {
@@ -47,6 +49,12 @@ class NavbarInstance extends Component {
   toggleModalRegister = () => {
     this.setState({
       isOpenRegister: !this.state.isOpenRegister
+    });
+  }
+
+  about = () => {
+    this.setState({
+      isOpenAbout: !this.state.isOpenAbout
     });
   }
 
@@ -117,6 +125,7 @@ class NavbarInstance extends Component {
     let currentUser = null;
     let reviews = null;
     let navDropdown = null;
+    let about = (<MenuItem onClick={this.about}>About</MenuItem>);
 
     if (!this.state.logged_in) {
       logAction = <NavItem onClick={this.toggleModalLogin} >Login</NavItem>
@@ -124,6 +133,7 @@ class NavbarInstance extends Component {
       navDropdown =
         <NavDropdown title="Actions" id="basic-nav-dropdown">
           {logAction}
+          {about}
         </NavDropdown>
     } else {
       logAction = <MenuItem onClick={this.logout}>Log out</MenuItem>
@@ -138,6 +148,7 @@ class NavbarInstance extends Component {
           <MenuItem onClick={this.onFollowers}> Followers </MenuItem>
           <MenuItem divider />
           {logAction}
+          {about}
         </NavDropdown>
     }
 
@@ -156,6 +167,15 @@ class NavbarInstance extends Component {
           <Nav pullRight>
             <Login show={this.state.isOpenLogin} onClose={this.toggleModalLogin} onUserChange={this.onUserChange} />
             <Register show={this.state.isOpenRegister} onClose={this.toggleModalRegister} onUserChange={this.onUserChange} />
+            <Modal show={this.state.isOpenAbout} onHide={this.about} >
+              <Modal.Header closeButton>
+                <Modal.Title>About</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <h3>This product uses the TMDb API but is not endorsed or certified by TMDb.</h3>
+                <Image src='https://www.themoviedb.org/assets/static_cache/fd6543b66d4fd736a628af57a75bbfda/images/v4/logos/293x302-powered-by-square-blue.png' />
+              </ Modal.Body>
+            </Modal>
             {currentUser}
             {register}
             {reviews}

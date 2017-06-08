@@ -8,13 +8,23 @@ import $ from "jquery";
 class FilterMovies extends Component {
     constructor(props) {
         super(props)
+
+        this.state = {
+            genre: 'Genre',
+            sort_by: 'Sort by'
+        }
+
         this.changeGenre = this.changeGenre.bind(this)
         this.changeYear = this.changeYear.bind(this)
         this.changeSortBy = this.changeSortBy.bind(this)
     }
 
     changeGenre(event) {
-        this.props.changeGenre(event.target.id)
+        var str = event.target.id
+        MOVIE_GENRES.forEach(item =>
+        { if (item.id == str) this.setState({ genre: item.name }) })
+
+        this.props.changeGenre(str)
     }
 
     changeYear(event) {
@@ -22,8 +32,10 @@ class FilterMovies extends Component {
     }
 
     changeSortBy(event) {
-        console.log(event.target.id)
-        this.props.changeSortBy(event.target.id)
+        var str = event.target.id
+        SORT_BY.forEach(item =>
+        { if (item.id === str) this.setState({ sort_by: item.title }) })
+        this.props.changeSortBy(str)
     }
 
     componentDidMount() {
@@ -33,12 +45,11 @@ class FilterMovies extends Component {
 
     render() {
         return (
-
             <div className="filter" style={{ color: 'white' }}>
                 <Grid>
                     <Row className="show-grid">
                         <Col xs={12} md={2} lg={2}>
-                            <DropdownButton bsStyle='default' title="Genre" id='dropdown-size-medium'>
+                            <DropdownButton bsStyle='default' title={this.state.genre} id='dropdown-size-medium'>
                                 {MOVIE_GENRES.map((item, index) =>
                                     <div key={index}>
                                         <MenuItem onClick={this.changeGenre} id={item.id}>{item.name}</MenuItem>
@@ -47,7 +58,7 @@ class FilterMovies extends Component {
                             </DropdownButton>
                         </Col>
                         <Col xs={12} md={2} lg={2}>
-                            <DropdownButton bsStyle='default' title="Sort by" id='dropdown-size-medium'>
+                            <DropdownButton bsStyle='default' title={this.state.sort_by} id='dropdown-size-medium'>
                                 {SORT_BY.map((item, index) =>
                                     <div key={index}>
                                         <MenuItem onClick={this.changeSortBy} id={item.id}>{item.title}</MenuItem>

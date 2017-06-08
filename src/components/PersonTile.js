@@ -13,7 +13,7 @@ class PersonTile extends Component {
     render() {
         var profile_path = `${IMAGE_PATH_W154}${this.props.people.profile_path}`
         if (!this.props.people.profile_path) {
-            profile_path = '../assets/person.jpg'
+            profile_path = require('../assets/person.jpg')
         }
         return (
             <figure className="grid-figure">

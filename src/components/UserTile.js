@@ -18,10 +18,12 @@ class UserTile extends Component {
         super(props)
 
         this.state = {
-            user: props.props
+            user: props.props,
+            following: false
         }
 
         this.followUser = this.followUser.bind(this)
+        this.unfollowUser = this.unfollowUser.bind(this)
     }
 
     followUser() {
@@ -31,8 +33,28 @@ class UserTile extends Component {
         }).then()
     }
 
+    unfollowUser() {
+        fetch(`${RAILS_API}followers.json?user_id=${this.state.user.id}`, {
+            method: 'DELETE',
+            headers: myHeaders
+        }).then()
+    }
+
+    componentWillMount() {
+        fetch(`${RAILS_API}following.json?`, {
+            headers: myHeaders
+        })
+            .then(results => results.json())
+            .then(result => {
+                result.forEach((element) => {
+                    if (element.id === this.props.props.id) this.setState({ following: true })
+                });
+            })
+    }
+
     render() {
         let image = ""
+        let btn = <Button onClick={this.followUser}>Follow</Button>
         if (this.state.user.user_image) {
             image = <Image src={this.state.user.user_image} alt={this.state.user.user_image}
                 style={{
@@ -40,6 +62,8 @@ class UserTile extends Component {
                     height: 75 + 'px'
                 }} circle responsive />
         }
+
+        if (this.state.following) btn = <Button onClick={this.unfollowUser}>Unfollow</Button>
 
         return (
             <div className="container-fluid">
@@ -49,7 +73,7 @@ class UserTile extends Component {
                     </div>
                     <div className="col-xs-8 col-lg-8">
                         <Link to={`/users/${this.state.user.id}`}><p>{this.state.user.name} {this.state.user.last_name}</p></Link>
-                        <Button onClick={this.followUser}>Follow</Button>
+                        {btn}
                     </div>
                 </div>
             </div>

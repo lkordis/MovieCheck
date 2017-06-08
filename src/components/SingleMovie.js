@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { Button, Tabs, Tab } from 'react-bootstrap';
+import { Button, Tabs, Tab, MenuItem, DropdownButton } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { TMDB_API_KEY } from '../config'
 import { TMDB_BASE_MOVIE, IMAGE_PATH, RAILS_API, RAILS_API_BASE_LOGIN } from '../constants'
@@ -16,6 +16,7 @@ class SingleMovie extends Component {
             movie: [],
             credits: [],
             crew: [],
+            rating: {},
             seen: false,
             wished: false,
             logged_in: false,
@@ -31,6 +32,9 @@ class SingleMovie extends Component {
         this.checkIfWished = this.checkIfWished.bind(this);
         this.deleteFromSeen = this.deleteFromSeen.bind(this);
         this.login = this.login.bind(this);
+        this.getMovieRating = this.getMovieRating.bind(this);
+        this.newRating = this.newRating.bind(this)
+        this.updateRating = this.updateRating.bind(this);
     }
 
     getCredits() {
@@ -67,6 +71,15 @@ class SingleMovie extends Component {
                 this.setMovie(result)
                 this.getCredits();
                 this.login(result.id)
+                this.getMovieRating(result.id)
+            });
+    }
+
+    getMovieRating(id) {
+        fetch(`${RAILS_API}movie_rating.json?movie_id=${id}`, { headers: myHeaders })
+            .then(response => response.json())
+            .then(result => {
+                this.setState({ rating: result })
             });
     }
 
@@ -127,6 +140,24 @@ class SingleMovie extends Component {
         this.setState({ credits: result.cast, crew: result.crew })
     }
 
+    newRating(eventKey, event) {
+        fetch(`${RAILS_API}ratings.json?movie_id=${this.state.movie.id}&rating=${eventKey}&title=${this.state.movie.original_title}`,
+            {
+                method: 'POST',
+                headers: myHeaders
+            })
+            .then(r => location.reload())
+    }
+
+    updateRating(eventKey, event) {
+        fetch(`${RAILS_API}ratings.json?movie_id=${this.state.movie.id}&rating=${eventKey}`,
+            {
+                method: 'PUT',
+                headers: myHeaders
+            })
+            .then(r => location.reload())
+    }
+
     componentWillMount() {
         this.getApiData()
     }
@@ -137,6 +168,11 @@ class SingleMovie extends Component {
         let addToSeenBtn = null;
         let addToWatchBtn = null;
         let addReviewBtn = null;
+        let rating = null;
+        let userRating = null;
+        let setRating = null;
+        let dropdown = null;
+
 
         if (this.state.logged_in) {
             if (!this.state.seen) {
@@ -149,6 +185,27 @@ class SingleMovie extends Component {
                 addToSeenBtn = <Button onClick={this.deleteFromSeen}>Remove from seen list</Button>
                 addReviewBtn = <Link to={`/new_review/${this.state.movie.id}`}><Button onClick={this.addReview}>Add a review</Button></Link>
             }
+            if (this.state.rating.rating) {
+                rating = <h3>Movie rating: {`${this.state.rating.rating}`}</h3>
+                if (this.state.rating.user_rating.rating) {
+                    userRating = <h3>Your rating: {`${this.state.rating.user_rating.rating}`}</h3>
+                    setRating = this.updateRating
+                } else {
+                    setRating = this.newRating
+                }
+            } else {
+                setRating = this.newRating
+            }
+            dropdown =
+                (<DropdownButton onSelect={setRating} title="Add rating" id='dropdown-size-medium'>
+                    <MenuItem eventKey="1">1</MenuItem>
+                    <MenuItem eventKey="2">2</MenuItem>
+                    <MenuItem eventKey="3">3</MenuItem>
+                    <MenuItem eventKey="4">4</MenuItem>
+                    <MenuItem eventKey="5">5</MenuItem>
+                </ DropdownButton>)
+        } else {
+            if (this.state.rating.rating) rating = <h3>Movie rating: {`${this.state.rating.rating}`}</h3>
         }
 
         return (
@@ -164,7 +221,9 @@ class SingleMovie extends Component {
                         {addToSeenBtn}
                         {addToWatchBtn}
                         {addReviewBtn}
-
+                        {rating}
+                        {userRating}<br />
+                        {dropdown}
                     </div>
                     <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                         <Tab eventKey={1} title="Credits">

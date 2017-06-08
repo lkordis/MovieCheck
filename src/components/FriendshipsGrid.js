@@ -11,13 +11,15 @@ class FriendshipsGrid extends Component {
         super(props)
 
         this.state = {
-            users: []
+            users: [],
+            title: 'Following users:'
         }
         this.setUsers = this.setUsers.bind(this)
     }
 
     setUsers(data) {
         this.setState({ users: data })
+        if(window.location.pathname.split('/').pop() === 'followers') this.setState({title: 'My followers: '})
     }
 
     componentWillMount() {
@@ -28,6 +30,7 @@ class FriendshipsGrid extends Component {
     render() {
         return (
             <div>
+                <h1 style={{ color: 'white' }}>{this.state.title}</h1>
                 <div style={{
                     display: 'flex',
                     maxWidth: '35%',
